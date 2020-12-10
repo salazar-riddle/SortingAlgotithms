@@ -14,8 +14,8 @@ matrix:
           packages:
             - clang++-5.0
             - libstdc++5
-            - lcov
-        env: COMPILER=clang++-5.0 C_COMPILER=clang-5.0 BUILD_TYPE=Debug
+        env:
+          - COMPILER=clang++-5.0 C_COMPILER=clang-5.0 BUILD_TYPE=Debug
 
     # works on Precise and Trusty
     - os: linux
@@ -26,12 +26,15 @@ matrix:
           packages:
           - g++-6
           - lcov
-        env: COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Coverage
-      - compiler: gcc
-        env: COMPILER=g++-6 C_COMPILER=gcc-6  BUILD_TYPE=Debug
-      - compiler: gcc
-        env: COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
-      - compiler: gcc
+        env:
+          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Coverage
+          - compiler: gcc
+        env:
+          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug
+          - compiler: gcc
+        env:
+          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
+          - compiler: gcc
 
 before_install:
   - pip install --user cpp-coveralls
