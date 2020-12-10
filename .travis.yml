@@ -9,13 +9,14 @@ matrix:
       addons:
         apt:
           sources:
+            - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
           packages:
             - clang++-5.0
+            - libstdc++5
             - lcov
-        env:
-          - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
-    
+        env: COMPILER=clang++-5.0 C_COMPILER=clang-5.0 BUILD_TYPE=Debug
+
     # works on Precise and Trusty
     - os: linux
       addons:
@@ -25,15 +26,23 @@ matrix:
           packages:
           - g++-6
           - lcov
-        env:
-          - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+        env: COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Coverage
+      - compiler: gcc
+        env: COMPILER=g++-6 C_COMPILER=gcc-6  BUILD_TYPE=Debug
+      - compiler: gcc
+        env: COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
+      - compiler: gcc
 
 before_install:
-  - eval "${MATRIX_EVAL}"
   - pip install --user cpp-coveralls
+  - mkdir -p build && cd build
 
 script:
-  - cmake --build .
+  - cmake -DCMAKE_C_COMPILER=${C_COMPILER} -DCMAKE_CXX_COMPILER=${COMPILER} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="${EXTRA_FLAGS}" -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS} ${EXTRA_CXX_FLAGS}" ${EXTRA_OPTIONS} ..
+  - make
+  - ctest -C ${BUILD_TYPE} --output-on-failure
 
 after_success:
-  - coveralls --root . -E ".*CMakeFiles.*"
+  - if [ "${BUILD_TYPE}" == "Coverage" -a "${TRAVIS_OS_NAME}" == "linux" ]; then
+      coveralls --include src --include include --gcov-options '\-lp' --root .. --build-root .;
+    fi
