@@ -1,40 +1,46 @@
 dist: trusty
 sudo: false
-language: cpp
+language: c++
+
+cache: ccache
+
+notifications:
+  email: false
+
+env:
+  global:
+  matrix:
+    - TRAVIS_EMPTY_JOB_WORKAROUND=true
+
+addons:
+  apt:
+    sources: &apt_sources
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-5.0
+
+compiler: gcc
+os: linux
 
 matrix:
-  include:
-    # works on Trusty
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-          packages:
-            - clang++-5.0
-            - libstdc++5
-        env:
-          - COMPILER=clang++-5.0 C_COMPILER=clang-5.0 BUILD_TYPE=Debug
+  exclude:
+    - env: TRAVIS_EMPTY_JOB_WORKAROUND=true
 
-    # works on Precise and Trusty
-    - os: linux
-      addons:
+  include:
+    # GCC 4.8
+    - env: COMPILER=g++-4.8 BUILD_TYPE=Debug CPP=11 CODE_COVERAGE=true
+      compiler: gcc
+      addons: &gcc48
         apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - g++-6
-          - lcov
-        env:
-          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Coverage
-          - compiler: gcc
-        env:
-          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug
-          - compiler: gcc
-        env:
-          - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
-          - compiler: gcc
+          packages: ["g++-4.8", "g++-4.8-multilib", "libc6-dbg", "libc6-dbg:i386", "lcov", "astyle", "valgrind"]
+          sources: *apt_sources
+
+    # GCC 6
+    - env: COMPILER=g++-6 BUILD_TYPE=Debug CPP=11
+      compiler: gcc
+      addons: &gcc6
+        apt:
+          packages: ["g++-6", "g++-6-multilib", "libc6-dbg", "libc6-dbg:i386", "lcov", "astyle", "valgrind"]
+          sources: *apt_sources
 
 before_install:
   - pip install --user cpp-coveralls
@@ -42,10 +48,10 @@ before_install:
 
 script:
   - cmake -DCMAKE_C_COMPILER=${C_COMPILER} -DCMAKE_CXX_COMPILER=${COMPILER} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="${EXTRA_FLAGS}" -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS} ${EXTRA_CXX_FLAGS}" ${EXTRA_OPTIONS} ..
-  - make
-  - ctest -C ${BUILD_TYPE} --output-on-failure
+  - make all
+  - valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes --trace-children=yes ./Main/Main
 
 after_success:
-  - if [ "${BUILD_TYPE}" == "Coverage" -a "${TRAVIS_OS_NAME}" == "linux" ]; then
+  - if [ -n "${CODE_COVERAGE}" ]; then
       coveralls --include src --include include --gcov-options '\-lp' --root .. --build-root .;
     fi
