@@ -54,7 +54,6 @@ matrix:
           sources: *apt_sources
 
 before_install:
-  - set -euo pipefail
   - mkdir -p build && cd build
 
 script:
@@ -64,7 +63,6 @@ script:
 
 after_success:
   - ctest -j $(nproc) --output-on-failure
-  
   - if [ -n "${CODE_COVERAGE}" ]; then lcov --directory . --capture --output-file coverage.info; fi
   - if [ -n "${CODE_COVERAGE}" ]; then lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info; fi
   - if [ -n "${CODE_COVERAGE}" ]; then lcov --list coverage.info; fi
