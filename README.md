@@ -1,5 +1,5 @@
 # SortingAlgotithms
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![Build Status](https://travis-ci.org/sauvik3/SortingAlgotithms.svg?branch=master)](https://travis-ci.org/sauvik3/SortingAlgotithms) [![Coverage Status](https://coveralls.io/repos/github/sauvik3/SortingAlgotithms/badge.svg?branch=master)](https://coveralls.io/github/sauvik3/SortingAlgotithms?branch=master)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![Build Status](https://travis-ci.org/sauvik3/SortingAlgotithms.svg?branch=master)](https://travis-ci.org/sauvik3/SortingAlgotithms) [![Coverage Status](https://codecov.io/gh/sauvik3/SortingAlgotithms/branch/master/graph/badge.svg?token=GCHQY6BNME)](https://codecov.io/gh/sauvik3/SortingAlgotithms)
 
 Description
 -------------------------------------------------------
