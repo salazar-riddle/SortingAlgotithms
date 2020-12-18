@@ -22,9 +22,9 @@ before_build:
 - cmd: cmake -H.. -DUSE_SHARED=%USE_SHARED%
 
 build:
-  project: ALL_BUILD.vcxproj
+  project: build/ALL_BUILD.vcxproj
   verbosity: minimal
   
 artifacts:
-  - path: $(CONFIGURATION)
-    name: $(CONFIGURATION)
+  - path: build/$(CONFIGURATION)
+    name: build/$(CONFIGURATION)
