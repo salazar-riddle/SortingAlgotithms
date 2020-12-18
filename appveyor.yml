@@ -18,7 +18,8 @@ environment:
   - USE_SHARED: 1
 
 before_build:
-- cmd: cmake -H. -B./build -DUSE_SHARED=%USE_SHARED%
+- cmd:  mkdir build && cd build
+- cmd: cmake -H.. -G "$(APPVEYOR_BUILD_WORKER_IMAGE)" -A ${PLATFORM} -DUSE_SHARED=%USE_SHARED%
 
 build:
   project: ALL_BUILD.vcxproj
