@@ -35,7 +35,7 @@ build_script:
 - ps: |
     md build -Force | Out-Null
     cd build
-    & cmake -H.. -G "$generator" -DUSE_SHARED=%USE_SHARED% -Dgtest_build_tests=OFF -Dgtest_build_samples=OFF -Dgmock_build_tests=OFF
+    & cmake -G "$generator" -DUSE_SHARED=%USE_SHARED% -Dgtest_build_tests=OFF -Dgtest_build_samples=OFF -Dgmock_build_tests=OFF ..
     if ($LastExitCode -ne 0) {
         throw "Exec: $ErrorMessage"
     }
