@@ -16,30 +16,25 @@ environment:
   matrix:
   - USE_SHARED: 0
   - USE_SHARED: 1
+  
+init:
+- set arch=
+- if "%arch%"=="Win64" ( set arch= Win64)
+- echo %arch%
+- echo %APPVEYOR_BUILD_WORKER_IMAGE%
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
+- echo %generator%
 
 before_build:
-- ps: |
-    Write-Output "Configuration: $env:CONFIGURATION"
-    Write-Output "Platform: $env:PLATFORM"
-    Write-Output "Toolset: $env:TOOLSET"
-    $generator = switch ($env:TOOLSET)
-    {
-        "141" {"Visual Studio 15 2017"}
-        "140" {"Visual Studio 14 2015"}
-    }
-
-build_script:
-- ps: |
-    md build -Force | Out-Null
+- cmd: |-
+    mkdir build
     cd build
-    & cmake -G "$generator" -DUSE_SHARED=%USE_SHARED% -Dgtest_build_tests=OFF -Dgtest_build_samples=OFF -Dgmock_build_tests=OFF ..
-    if ($LastExitCode -ne 0) {
-        throw "Exec: $ErrorMessage"
-    }
-    & cmake --build . --config $env:CONFIGURATION
-    if ($LastExitCode -ne 0) {
-        throw "Exec: $ErrorMessage"
-    }
+    cmake .. -G %generator% -DUSE_SHARED=%USE_SHARED% -Dgtest_build_tests=OFF -Dgtest_build_samples=OFF -Dgmock_build_tests=OFF
+
+build:
+  project: build/ALL_BUILD.vcxproj
+  verbosity: minimal
   
 test_script:
 - ps: |
