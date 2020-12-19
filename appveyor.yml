@@ -5,7 +5,7 @@ image:
 - Visual Studio 2015
 
 platform:
-  - x86
+  - Win32
   - x64
 
 configuration:
@@ -18,12 +18,41 @@ environment:
   - USE_SHARED: 1
 
 before_build:
-- cmd:  mkdir build && cd build
-- cmd: cmake -H.. -DUSE_SHARED=%USE_SHARED%
+- ps: |
+    Write-Output "Configuration: $env:CONFIGURATION"
+    Write-Output "Platform: $env:PLATFORM"
+    $generator = switch ($env:TOOLSET)
+    {
+        "v141" {"Visual Studio 15 2017"}
+        "v140" {"Visual Studio 14 2015"}
+    }
+    if ($env:PLATFORM -eq "x64")
+    {
+        $generator = "$generator Win64"
+    }
+
+build_script:
+- ps: |
+    md build -Force | Out-Null
+    cd build
+    & cmake -H.. -G "$generator" -DUSE_SHARED=%USE_SHARED% -Dgtest_build_tests=OFF -Dgtest_build_samples=OFF -Dgmock_build_tests=OFF
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
+    & cmake --build . --config $env:CONFIGURATION
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
 
 build:
-  project: build/ALL_BUILD.vcxproj
   verbosity: minimal
+  
+test_script:
+- ps: |
+    ctest -C $env:CONFIGURATION --output-on-failure
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
   
 artifacts:
   - path: build
