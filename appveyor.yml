@@ -21,14 +21,11 @@ before_build:
 - ps: |
     Write-Output "Configuration: $env:CONFIGURATION"
     Write-Output "Platform: $env:PLATFORM"
+    Write-Output "Toolset: $env:TOOLSET"
     $generator = switch ($env:TOOLSET)
     {
-        "v141" {"Visual Studio 15 2017"}
-        "v140" {"Visual Studio 14 2015"}
-    }
-    if ($env:PLATFORM -eq "x64")
-    {
-        $generator = "$generator Win64"
+        "141" {"Visual Studio 15 2017"}
+        "140" {"Visual Studio 14 2015"}
     }
 
 build_script:
