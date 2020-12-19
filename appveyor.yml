@@ -43,9 +43,6 @@ build_script:
     if ($LastExitCode -ne 0) {
         throw "Exec: $ErrorMessage"
     }
-
-build:
-  verbosity: minimal
   
 test_script:
 - ps: |
