@@ -1,5 +1,5 @@
 # SortingAlgotithms
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![Build status](https://ci.appveyor.com/api/projects/status/obodicnmqutvl025?svg=true)](https://ci.appveyor.com/project/sauvik3/sortingalgotithms)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build status](https://ci.appveyor.com/api/projects/status/obodicnmqutvl025?svg=true)](https://ci.appveyor.com/project/sauvik3/sortingalgotithms)
  [![Build Status](https://travis-ci.org/sauvik3/SortingAlgotithms.svg?branch=master)](https://travis-ci.org/sauvik3/SortingAlgotithms) [![codecov](https://codecov.io/gh/sauvik3/SortingAlgotithms/branch/master/graph/badge.svg?token=GCHQY6BNME)](https://codecov.io/gh/sauvik3/SortingAlgotithms)
 
 Description
