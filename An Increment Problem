@@ -1,0 +1,14 @@
+vector<int> Solution::solve(vector<int> &A) {
+    unordered_map<int,int> m;
+    int temp=0;
+    for(int i=0;i<A.size();i++){
+        if(m.find(A[i])!=m.end()) {
+            if(m[A[i]]< i){
+                m[A[i]+1]=m[A[i]];
+                A[m[A[i]]]++;
+            }
+        }
+        m[A[i]]=i;
+    }
+    return A;
+}
