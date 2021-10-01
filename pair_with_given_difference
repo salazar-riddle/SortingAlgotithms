@@ -1,0 +1,12 @@
+int Solution::solve(vector<int> &A, int B) {
+    sort(A.begin(),A.end());
+    int i=0,j=1;
+    
+    while(j<A.size()){
+        
+        if(abs(A[j]-A[i])==abs(B)) return 1;
+        if(abs(A[i]-A[j])>abs(B)) {i++;j=i;}
+        j++;
+    }
+    return 0;
+}
