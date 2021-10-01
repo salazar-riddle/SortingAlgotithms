@@ -1,0 +1,15 @@
+int Solution::solve(vector<int> &A) {
+    unordered_map<int,int> Map;
+            int Min= A.size();
+            int flag=0;
+    for(int i=0;i<A.size();i++){
+
+        if(Map.find(A[i])== Map.end()) Map[A[i]] = i;
+        else{
+            Min= min(Min, Map[A[i]]);
+            flag=1;
+        }
+    }
+    if(!flag) return -1;
+    return A[Min];
+}
