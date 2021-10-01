@@ -1,0 +1,23 @@
+vector<int> Solution::intersect(const vector<int> &A, const vector<int> &B) {
+    vector<int> C;
+    int n= A.size();
+    int m=B.size();
+    int j=0,i=0;
+    while(j<m && i<n){
+        
+        if(A[i]<B[j]){
+            i++;
+            
+        }
+        else if(B[j]<A[i]){
+            j++;
+        }
+        else {
+            C.push_back(A[i++]);
+            j++;
+        }
+        
+        
+    }
+    return C;
+}
