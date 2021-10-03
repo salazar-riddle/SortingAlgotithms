@@ -9,10 +9,17 @@ void Solution::merge(vector<int> &A, vector<int> &B) {
 	A.push_back(INT_MAX);
 	B.push_back(INT_MAX);
 	for (int i = 0, j = 0; i < n1+1 && j < n2+1 ;) {
-		//db3(i, A[i], B[j]); db1(j);
-		if (A[i] < B[j]) {C.push_back(A[i]); i++;}
-		else if(A[i]==B[j]){ C.push_back(A[i++]);C.push_back(B[j++]);}
-		else { C.push_back(B[j]); j++;}
+		if (A[i] < B[j]) {
+			C.push_back(A[i++]); 
+		}		}
+		else if(A[i]==B[j]){ 
+			C.push_back(A[i++]);
+			C.push_back(B[j++]);
+		}
+		else 
+		{ 
+			C.push_back(B[j++]);
+		}
 	}
 	C.pop_back();
 	C.pop_back();
