@@ -2,12 +2,11 @@ vector<int> Solution::lszero(vector<int> &A) {
     unordered_map<int,int> Map;
     int sum=0;
     int start=0,end=0;
-    vector<int> res(0,0);
+    vector<int> res;
     int Max=INT_MIN;
     for(int i=0;i<A.size();i++)
     {
         sum+=A[i];
-        //cout<<sum<<endl;
         if(sum==0) { start= -1; end = i; Max= max(Max, i+1);}
         if(Map.find(sum)==Map.end())
         {    
@@ -15,7 +14,6 @@ vector<int> Solution::lszero(vector<int> &A) {
         }
         else 
         {
-            //cout<<"Max "<<Max<<endl;
             if(Max < abs(Map[sum]-i)+1)
             {
                 start= i;
@@ -26,7 +24,6 @@ vector<int> Solution::lszero(vector<int> &A) {
             }        
         }
     }
-    //cout<<start<<" "<<end<<endl;
     if(start>end) 
         swap(start,end);  // start and end may be reversed
     for(int i=start+1;i<=end;i++) 
