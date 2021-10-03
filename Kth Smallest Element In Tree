@@ -19,14 +19,15 @@ int inordsucc(TreeNode* root,int ele){
              head= head->right;
          }
          else{
-            if(head->right==NULL) return succ->val;
-            else{
+           
+            if(head->right==NULL){
                 head=head->right;
                 while(head->left){
                     head=head->left;
                 }
                 return head->val;
             }
+            else return succ->val;
          }
      }
      return succ->val;
